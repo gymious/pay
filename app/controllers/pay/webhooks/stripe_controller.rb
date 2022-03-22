@@ -37,6 +37,7 @@ module Pay
 
       def secrets(payload, signature)
         secret = Pay::Stripe.signing_secret
+        secret = secret.split(",") if secret&.is_a? String
         return Array.wrap(secret) if secret
         raise ::Stripe::SignatureVerificationError.new("Cannot verify signature without a Stripe signing secret", signature, http_body: payload)
       end
